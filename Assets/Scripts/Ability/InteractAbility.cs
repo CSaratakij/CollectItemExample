@@ -56,6 +56,9 @@ public class InteractAbility : MonoBehaviour
         bool isAbleToPickUp = (Input.GetKeyDown(KeyCode.E) && IsInteractable);
 
         if (isAbleToPickUp) {
+            // TODO : What you want to do when player pick this object up is here...
+            // Maybe, check the type of object first....
+            // For an example, a door is interactable but cannot pick able.
             currentFoundObject.SetActive(false);
         }
     }
