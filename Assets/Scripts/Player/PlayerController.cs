@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    Transform referenceAxis;
+    Transform camera;
 
     [SerializeField]
     float moveSpeed = 10.0f;
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     void Initialize()
     {
         characterController = GetComponent<CharacterController>();
+        camera.parent = null;
     }
 
     void InputHandler()
@@ -40,15 +41,15 @@ public class PlayerController : MonoBehaviour
 
     void MovementHandler()
     {
-        var direction = GetCameraFacing(referenceAxis);
+        var direction = GetCameraFacing(camera);
         velocity = direction * moveSpeed;
         characterController.Move(velocity * Time.deltaTime);
     }
 
-    Vector3 GetCameraFacing(Transform referenceAxis)
+    Vector3 GetCameraFacing(Transform camera)
     {
-        var forwardDirection = referenceAxis.forward;
-        var rightDirection = referenceAxis.right;
+        var forwardDirection = camera.forward;
+        var rightDirection = camera.right;
 
         forwardDirection.y = 0.0f;
         rightDirection.y = 0.0f;
