@@ -5,17 +5,26 @@ using UnityEngine;
 
 public class InteractAbility : MonoBehaviour
 {
-    Action<bool> OnFoundSomething;
+    Action<bool, GameObject> OnFoundSomething;
 
     [SerializeField]
-    float maxRayDistance = 1000.0f;
+    float maxInteractableDistance = 5.0f;
+
+    [SerializeField]
+    float maxRayDistance = 100.0f;
 
     [SerializeField]
     LayerMask interactableMask;
 
+    public bool IsInteractable { get; private set; }
+    public GameObject CurrentFoundObject => currentFoundObject;
+
     bool currentFoundState;
     bool previousFoundState;
 
+    float currentDistance = 0.0f;
+
+    GameObject currentFoundObject;
     Camera mainCamera;
 
     void Awake()
@@ -28,9 +37,27 @@ public class InteractAbility : MonoBehaviour
         mainCamera = Camera.main;
     }
 
+    void Update()
+    {
+        PickupHandler();
+    }
+
     void FixedUpdate()
     {
         CheckInteractableObject();
+    }
+
+    void PickupHandler()
+    {
+        IsInteractable = currentFoundState &&
+                        (currentFoundObject != null) &&
+                        (currentDistance <= maxInteractableDistance);
+
+        bool isAbleToPickUp = (Input.GetKeyDown(KeyCode.E) && IsInteractable);
+
+        if (isAbleToPickUp) {
+            currentFoundObject.SetActive(false);
+        }
     }
 
     void CheckInteractableObject()
@@ -41,10 +68,13 @@ public class InteractAbility : MonoBehaviour
         previousFoundState = currentFoundState;
         currentFoundState = Physics.Raycast(ray, out hit, maxRayDistance, interactableMask);
 
+        currentDistance = hit.distance;
+
+        currentFoundObject = (currentFoundState) ? hit.transform.gameObject : null;
         bool isFoundStateChange = (currentFoundState != previousFoundState);
 
         if (isFoundStateChange) {
-            OnFoundSomething?.Invoke(currentFoundState);
+            OnFoundSomething?.Invoke(currentFoundState, currentFoundObject);
         }
     }
 }
