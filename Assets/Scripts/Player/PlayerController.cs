@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
         inputVector.y = Input.GetAxisRaw("Vertical");
 
         inputVector = Vector2.ClampMagnitude(inputVector, 1.0f);
-        isPressJump = Input.GetKey(KeyCode.Space);
+        isPressJump = Input.GetButton("Jump");
     }
 
     void MovementHandler()

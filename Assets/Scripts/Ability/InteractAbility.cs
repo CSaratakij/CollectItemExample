@@ -53,7 +53,7 @@ public class InteractAbility : MonoBehaviour
                         (currentFoundObject != null) &&
                         (currentDistance <= maxInteractableDistance);
 
-        bool isAbleToPickUp = (Input.GetKeyDown(KeyCode.E) && IsInteractable);
+        bool isAbleToPickUp = (Input.GetButtonDown("Interact") && IsInteractable);
 
         if (isAbleToPickUp) {
             // TODO : What you want to do when player pick this object up is here...
