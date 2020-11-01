@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 2136005482914360332}
   - component: {fileID: 2136005482914360331}
   - component: {fileID: 2821916726561758112}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -229,8 +229,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edb3b058b4245ee6db4e1aa0ddca32fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 5
+  jumpSpeed: 12
+  terminalVelocity: 1000
+  gravity: 40
+  gravityScale: 1
   camera: {fileID: 2136005481234098289}
-  moveSpeed: 10
 --- !u!114 &2821916726561758112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fba4cf652f221e13931d94de06a30f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxInteractableDistance: 5
   maxRayDistance: 1000
   interactableMask:
     serializedVersion: 2

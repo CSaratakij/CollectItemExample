@@ -2,13 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Setting")]
+    [SerializeField]
+    float moveSpeed = 10.0f;
+
+    [SerializeField]
+    float jumpSpeed = 20.0f;
+
+    [SerializeField]
+    float terminalVelocity = 1000.0f;
+
+    [SerializeField]
+    float gravity = 9.8f;
+
+    [SerializeField]
+    float gravityScale = 1.0f;
+
+    [Header("Dependencies")]
     [SerializeField]
     Transform camera;
 
-    [SerializeField]
-    float moveSpeed = 10.0f;
+    bool isPressJump;
 
     Vector2 inputVector;
     Vector3 velocity;
@@ -36,13 +53,22 @@ public class PlayerController : MonoBehaviour
     {
         inputVector.x = Input.GetAxisRaw("Horizontal");
         inputVector.y = Input.GetAxisRaw("Vertical");
+
         inputVector = Vector2.ClampMagnitude(inputVector, 1.0f);
+        isPressJump = Input.GetKey(KeyCode.Space);
     }
 
     void MovementHandler()
     {
-        var direction = GetCameraFacing(camera);
-        velocity = direction * moveSpeed;
+        if (characterController.isGrounded) {
+            var direction = GetCameraFacing(camera);
+            velocity = (direction * moveSpeed);
+            velocity.y = (isPressJump) ? jumpSpeed : 0.0f;
+        }
+
+        velocity.y -= (gravity * gravityScale) * Time.deltaTime;
+        velocity.y = Mathf.Clamp(velocity.y, -terminalVelocity, terminalVelocity);
+
         characterController.Move(velocity * Time.deltaTime);
     }
 
